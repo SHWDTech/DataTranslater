@@ -24,7 +24,7 @@ namespace SHWD.DataTranslate.Process
             _statList = _sqlContext.T_Stats.ToList();
         }
 
-        public void TranslateMinToWdDb(int devid, string targetStatCode, DateTime startDate, DateTime endDate)
+        public int TranslateMinToWdDb(int devid, string targetStatCode, DateTime startDate, DateTime endDate)
         {
             var dev = _devList.First(obj => obj.Id == devid);
             var stat = _statList.First(obj => obj.Id.ToString() == dev.StatId);
@@ -56,7 +56,7 @@ namespace SHWD.DataTranslate.Process
                 }
             }
 
-            _sqlContext.SaveChanges();
+            return _sqlContext.SaveChanges();
         }
     }
 }

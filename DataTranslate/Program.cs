@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Reflection;
 using System.Threading;
+using log4net;
 using SHWD.DataTranslate.Model;
 using SHWD.DataTranslate.Process;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 namespace SHWD.DataTranslate
 {
     class Program
@@ -16,13 +19,20 @@ namespace SHWD.DataTranslate
         static void Main()
         {
             Init();
-            //Daemon();
-            RunOnce();
+            Daemon();
         }
 
         static void Init()
         {
-            _translater = new Translater();
+            try
+            {
+                _translater = new Translater();
+            }
+            catch (Exception ex)
+            {
+                var log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+                log.Error("数据库连接建立失败", ex);
+            }
             _devStatPairList = new List<DevStatPair>();
 
             var devStatPairString = ConfigurationManager.AppSettings["DevStatPair"].Split(';');
@@ -50,7 +60,8 @@ namespace SHWD.DataTranslate
                 }
                 catch (Exception ex)
                 {
-                    
+                    var log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+                    log.Error("数据转换失败", ex);
                 }
                 Thread.Sleep(60000);
             }
@@ -61,15 +72,8 @@ namespace SHWD.DataTranslate
         {
             foreach (var devStatPair in _devStatPairList)
             {
-                _translater.TranslateMinToWdDb(devStatPair.DevId, devStatPair.StatCode, DateTime.Now.AddMinutes(-1), DateTime.Now);
-            }
-        }
-
-        static void RunOnce()
-        {
-            foreach (var devStatPair in _devStatPairList)
-            {
-                _translater.TranslateMinToWdDb(devStatPair.DevId, devStatPair.StatCode, DateTime.Now.AddYears(-2), DateTime.Now);
+                var resultCount = _translater.TranslateMinToWdDb(devStatPair.DevId, devStatPair.StatCode, DateTime.Now.AddMinutes(-1), DateTime.Now);
+                Console.WriteLine($"数据转换完成，原数据设备号：{devStatPair.StatCode}，本地设备编号：{devStatPair.DevId}，影响行数：{resultCount}。");
             }
         }
     }
