@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{346A0444-4466-457A-8BF7-7EACC97A2385}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SHWD.DataTranslate</RootNamespace>
+    <AssemblyName>DataTranslate</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.9.8\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataProvider\dev_info.cs">
+      <DependentUpon>JYData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataProvider\JYData.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JYData.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataProvider\JYData.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JYData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataProvider\JYData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JYData.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataProvider\sensor_data_hour.cs">
+      <DependentUpon>JYData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataProvider\sensor_data_min.cs">
+      <DependentUpon>JYData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DevStatPair.cs" />
+    <Compile Include="Process\Translater.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WDDataProvider\T_Alarms.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Alarms_GetDustOverDataCount_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Alarms_GetDustOverDataPerDay_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Alarms_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Alarms_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_AlarmType.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_AlarmType_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Camera.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Camera_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Country.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_DevAddr.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Devs.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Devs_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Devs_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Devs_GetRelatedStat_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESDay.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESDaytemp1.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESDay_GetAvgCMPList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESDay_GetAvgCMPOrderList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESDay_GetAvgCMPStatList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESDay_GetAvgNoiseList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESDay_GetAvgNoiseOrderList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESDay_GetAvgNoiseStatList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESDay_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESDay_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESHour.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESHour_GetAvgCMPStatList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESHour_GetAvgNoiseStatList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESHour_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESHour_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESMin.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESMin_GetCurData_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESMin_GetCurDevData_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESMin_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ESMin_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Files.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_GroupModules.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_GroupModules_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_GroupModules_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Offset.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Photos.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Photos_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_ProduceReport_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Province.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Stage.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_StageReport_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_StatCompare_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Stats.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Stats_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Stats_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_TaskNotice.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_TaskNotice_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_TaskNotice_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Tasks.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Tasks_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Tasks_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_UserAuthority.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_UserAuthority_GetAuths_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_UserGroup.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_UserGroup_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_UserGroup_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_UserInGroups.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_UserInGroups_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_UserInGroups_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Users.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Users_GetList_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\T_Users_GetModel_Result.cs">
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\WDData.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WDData.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\WDData.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WDData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WDDataProvider\WDData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WDData.edmx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="DataProvider\JYData.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>JYData.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DataProvider\JYData.edmx.diagram">
+      <DependentUpon>JYData.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <EntityDeploy Include="WDDataProvider\WDData.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WDData.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="WDDataProvider\WDData.edmx.diagram">
+      <DependentUpon>WDData.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataProvider\JYData.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>JYData.edmx</DependentUpon>
+      <LastGenOutput>JYData.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DataProvider\JYData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>JYData.edmx</DependentUpon>
+      <LastGenOutput>JYData.cs</LastGenOutput>
+    </Content>
+    <Content Include="WDDataProvider\WDData.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WDData.edmx</DependentUpon>
+      <LastGenOutput>WDData.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="WDDataProvider\WDData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WDData.edmx</DependentUpon>
+      <LastGenOutput>WDData.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
