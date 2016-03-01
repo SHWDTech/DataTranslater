@@ -14,7 +14,7 @@ namespace SHWD.DataTranslate.Process
 
         private readonly List<T_Devs> _devList;
 
-        private readonly List<T_Stats> _statList; 
+        private readonly List<T_Stats> _statList;
 
         public Translater()
         {
@@ -24,12 +24,15 @@ namespace SHWD.DataTranslate.Process
             _statList = _sqlContext.T_Stats.ToList();
         }
 
-        public int TranslateMinToWdDb(int devid, string targetStatCode, DateTime startDate, DateTime endDate)
+        public int TranslateMinToWdDb(int devid, string targetStatCode)
         {
             var dev = _devList.First(obj => obj.Id == devid);
+            var lastRecord = _sqlContext.T_ESMin.Where(item => item.DevId == dev.Id && item.UpdateTime > DateTime.Today).ToList().OrderByDescending(obj => obj.StatCode).FirstOrDefault();
+
+            var lastId = lastRecord != null ? lastRecord.StatCode : 0;
             var stat = _statList.First(obj => obj.Id.ToString() == dev.StatId);
 
-            var mysqlData = _mySqlContext.sensor_data_min.Where(obj => obj.DataTime >= startDate && obj.DataTime <= endDate && obj.StatCode == targetStatCode)
+            var mysqlData = _mySqlContext.sensor_data_min.Where(obj => obj.StatCode == targetStatCode && obj.ID > lastId)
                 .ToList();
             if (mysqlData.Any())
             {

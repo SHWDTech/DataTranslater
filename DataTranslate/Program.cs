@@ -18,11 +18,15 @@ namespace SHWD.DataTranslate
 
         static void Main()
         {
-            Init();
+            if (!Init())
+            {
+                return;
+            }
+
             Daemon();
         }
 
-        static void Init()
+        static bool Init()
         {
             try
             {
@@ -32,6 +36,9 @@ namespace SHWD.DataTranslate
             {
                 var log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
                 log.Error("数据库连接建立失败", ex);
+                Console.WriteLine("数据库连接建立失败！");
+                Console.ReadKey();
+                return false;
             }
             _devStatPairList = new List<DevStatPair>();
 
@@ -48,6 +55,7 @@ namespace SHWD.DataTranslate
                 _devStatPairList.Add(pair);
             }
 
+            return true;
         }
 
         static void Daemon()
@@ -62,6 +70,7 @@ namespace SHWD.DataTranslate
                 {
                     var log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
                     log.Error("数据转换失败", ex);
+                    Console.WriteLine($"数据转换失败,{ex.Message}，：{DateTime.Now}");
                 }
                 Thread.Sleep(60000);
             }
@@ -72,8 +81,8 @@ namespace SHWD.DataTranslate
         {
             foreach (var devStatPair in _devStatPairList)
             {
-                var resultCount = _translater.TranslateMinToWdDb(devStatPair.DevId, devStatPair.StatCode, DateTime.Now.AddMinutes(-1), DateTime.Now);
-                Console.WriteLine($"数据转换完成，原数据设备号：{devStatPair.StatCode}，本地设备编号：{devStatPair.DevId}，影响行数：{resultCount}。");
+                var resultCount = _translater.TranslateMinToWdDb(devStatPair.DevId, devStatPair.StatCode);
+                Console.WriteLine($"数据转换完成，原数据设备号：{devStatPair.StatCode}，本地设备编号：{devStatPair.DevId}，影响行数：{resultCount}。：{DateTime.Now}");
             }
         }
     }
