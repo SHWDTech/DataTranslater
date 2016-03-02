@@ -16,23 +16,31 @@ namespace SHWD.DataTranslate.Process
 
         private readonly List<T_Stats> _statList;
 
+        private int LastRecordId { get; set; }
+
         public Translater()
         {
             _mySqlContext = new data_centerEntities();
             _sqlContext = new ESMonitorEntities();
             _devList = _sqlContext.T_Devs.ToList();
             _statList = _sqlContext.T_Stats.ToList();
+            LastRecordId = -1;
         }
 
         public int TranslateMinToWdDb(int devid, string targetStatCode)
         {
             var dev = _devList.First(obj => obj.Id == devid);
-            var lastRecord = _sqlContext.T_ESMin.Where(item => item.DevId == dev.Id && item.UpdateTime > DateTime.Today).ToList().OrderByDescending(obj => obj.StatCode).FirstOrDefault();
+            if (LastRecordId == -1)
+            {
+                var lastRecord = _sqlContext.T_ESMin.Where(item => item.DevId == dev.Id && item.UpdateTime > new DateTime(2016, 1, 1))
+                    .OrderByDescending(obj => obj.StatCode).FirstOrDefault();
 
-            var lastId = lastRecord != null ? lastRecord.StatCode : 0;
+                LastRecordId = (int) lastRecord.StatCode;
+            }
+            
             var stat = _statList.First(obj => obj.Id.ToString() == dev.StatId);
 
-            var mysqlData = _mySqlContext.sensor_data_min.Where(obj => obj.StatCode == targetStatCode && obj.ID > lastId)
+            var mysqlData = _mySqlContext.sensor_data_min.Where(obj => obj.StatCode == targetStatCode && obj.ID > LastRecordId)
                 .ToList();
             if (mysqlData.Any())
             {
