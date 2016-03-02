@@ -63,6 +63,7 @@ namespace SHWD.DataTranslate.Process
                         UpdateTime = sensorDataMin.DataTime
                     };
 
+                    LastRecordId = sensorDataMin.ID;
                     _sqlContext.T_ESMin.Add(sqlData);
                 }
             }
