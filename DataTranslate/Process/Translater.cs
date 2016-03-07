@@ -29,19 +29,18 @@ namespace SHWD.DataTranslate.Process
 
         public int TranslateMinToWdDb(int devid, string targetStatCode)
         {
-            var dev = _devList.First(obj => obj.Id == devid);
+            var dev = GetTargetDevice(devid);
+
             if (LastRecordId == -1)
             {
-                var lastRecord = _sqlContext.T_ESMin.Where(item => item.DevId == dev.Id && item.UpdateTime > new DateTime(2016, 1, 1))
-                    .OrderByDescending(obj => obj.StatCode).FirstOrDefault();
-
-                LastRecordId = (int) lastRecord.StatCode;
+                GetLastRecordOutId(devid);
             }
             
             var stat = _statList.First(obj => obj.Id.ToString() == dev.StatId);
 
             var mysqlData = _mySqlContext.sensor_data_min.Where(obj => obj.StatCode == targetStatCode && obj.ID > LastRecordId)
                 .ToList();
+
             if (mysqlData.Any())
             {
                 foreach (var sensorDataMin in mysqlData)
@@ -69,6 +68,24 @@ namespace SHWD.DataTranslate.Process
             }
 
             return _sqlContext.SaveChanges();
+        }
+
+        private T_Devs GetTargetDevice(int deviceId)
+        {
+            var dev = _devList.FirstOrDefault(obj => obj.Id == deviceId);
+
+            if(dev == null)
+                throw new ArgumentException("不存在的设备ID");
+
+            return dev;
+        }
+
+        private void GetLastRecordOutId(int deviceId)
+        {
+            var lastRecord = _sqlContext.T_ESMin.Where(item => item.DevId == deviceId && item.UpdateTime > new DateTime(2016, 1, 1))
+                    .OrderByDescending(obj => obj.StatCode).FirstOrDefault();
+
+            LastRecordId = lastRecord?.StatCode ?? 0;
         }
     }
 }
