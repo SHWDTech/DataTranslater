@@ -27,19 +27,29 @@ namespace SHWD.DataTranslate.Process
             LastRecordId = -1;
         }
 
-        public int TranslateMinToWdDb(int devid, string targetStatCode)
+        public int TranslateMinToWdDb(int devid, string targetStatCode, int taskIndex)
         {
             var dev = GetTargetDevice(devid);
+
+            Console.WriteLine($"获取到的设备信息：{dev.Id},- {dev.DevCode} - {dev.OuterCode} - {dev.StatId}");
 
             if (LastRecordId == -1)
             {
                 GetLastRecordOutId(devid);
             }
+
+            Console.WriteLine($"最后一次记录的ID号：{LastRecordId}");
             
             var stat = _statList.First(obj => obj.Id.ToString() == dev.StatId);
 
+            Console.WriteLine($"工地相关信息：{stat.Id} - {stat.StatCode}");
+
             var mysqlData = _mySqlContext.sensor_data_min.Where(obj => obj.StatCode == targetStatCode && obj.ID > LastRecordId)
                 .ToList();
+
+            Console.WriteLine($"一共还有{mysqlData.Count}条记录要转换。");
+
+            var count = 0;
 
             if (mysqlData.Any())
             {
@@ -59,15 +69,18 @@ namespace SHWD.DataTranslate.Process
                         WindSpeed = sensorDataMin.WindSpeed,
                         Temperature = sensorDataMin.Temperature,
                         Airpressure = sensorDataMin.AirPressure,
-                        UpdateTime = sensorDataMin.DataTime
+                        UpdateTime = sensorDataMin.DataTime,
+                        Humidity = sensorDataMin.Humidity
                     };
 
                     LastRecordId = sensorDataMin.ID;
                     _sqlContext.T_ESMin.Add(sqlData);
+                    count += _sqlContext.SaveChanges();
+                    Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss fff")}：当前任务号：{taskIndex}保存数据成功。当前第{count}条，共{mysqlData.Count}条。");
                 }
             }
 
-            return _sqlContext.SaveChanges();
+            return count;
         }
 
         private T_Devs GetTargetDevice(int deviceId)

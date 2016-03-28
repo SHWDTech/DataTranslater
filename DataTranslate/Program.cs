@@ -24,6 +24,10 @@ namespace SHWD.DataTranslate
 
         private static Thread _devStaThread;
 
+        private static bool _isTranslating;
+
+        private static int _taskIndex;
+
         private static void Main()
         {
             if (!Init())
@@ -38,6 +42,8 @@ namespace SHWD.DataTranslate
         {
             // ReSharper disable once InconsistentlySynchronizedField
             _devStatPairList = new List<DevStatPair>();
+
+            _taskIndex = 0;
 
             _threads = new Dictionary<string, Thread>();
             _devStaThread = new Thread(TryGetUpdateStatList);
@@ -148,6 +154,7 @@ namespace SHWD.DataTranslate
                 if (_devStatPairList.All(item => item.DevId != pair.DevId)) return;
                 try
                 {
+                    if (_isTranslating) continue;
                     DoTranslate(pair.DevId, pair.StatCode);
                 }
                 catch (Exception ex)
@@ -163,8 +170,11 @@ namespace SHWD.DataTranslate
 
         private static void DoTranslate(int devId, string statCode)
         {
-            var resultCount = _translater.TranslateMinToWdDb(devId, statCode);
-            Console.WriteLine($"数据转换完成，原数据设备号：{devId}，本地设备编号：{statCode}，影响行数：{resultCount}。：{DateTime.Now}");
+            _isTranslating = true;
+            var resultCount = _translater.TranslateMinToWdDb(devId, statCode, _taskIndex);
+            Console.WriteLine($"数据转换完成，原数据设备号：{statCode}，本地设备编号：{devId}，影响行数：{resultCount}。当前时间：{DateTime.Now}，任务号：{_taskIndex}");
+            _taskIndex += 1;
+            _isTranslating = false;
         }
     }
 }
